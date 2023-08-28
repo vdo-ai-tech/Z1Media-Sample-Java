@@ -3,6 +3,7 @@ package com.example.z1mediasamplejava;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -15,8 +16,6 @@ import com.z1media.android.sdk.listeners.OnShowAdCompleteListener;
 public class SplashActivity extends AppCompatActivity {
 
     String LOG_TAG = "SplashActivity";
-    private long COUNTER_TIME = 5;
-    private long secondsRemaining = 0;
 
     ActivitySplashBinding binding;
 
@@ -26,24 +25,9 @@ public class SplashActivity extends AppCompatActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        createTimer(COUNTER_TIME);
-
-    }
-
-
-    private void createTimer(long seconds) {
-
-        CountDownTimer countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                secondsRemaining = millisUntilFinished / 1000 + 1;
-                binding.counterTextView.setText("App is done loading in:"+secondsRemaining);
-            }
-
-            @Override
-            public void onFinish() {
-                binding.counterTextView.setText("Done");
-
+            public void run() {
                 MyApplication application = (MyApplication) getApplication();
 
 
@@ -63,13 +47,14 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
             }
-        };
-        countDownTimer.start();
+        }, 3000);
     }
+
 
     void startMainActivity() {
         Intent intent = new Intent(this, com.example.z1mediasamplejava.MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
 }
